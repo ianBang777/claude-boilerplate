@@ -5,9 +5,14 @@ set -eu
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 BOILERPLATE_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd -P)"
 
-# 연동할 대상 프로젝트 경로 (인자로 전달하거나 기본값 사용)
-TARGET_PROJECT="${1:-${HOME}/Documents/repo/client}"
-TARGET_CLAUDE_DIR="${TARGET_PROJECT}/.claude"
+# 인자가 있으면 해당 프로젝트의 .claude, 없으면 전역 ~/.claude
+if [ $# -gt 0 ]; then
+  TARGET_PROJECT="$1"
+  TARGET_CLAUDE_DIR="${TARGET_PROJECT}/.claude"
+else
+  TARGET_PROJECT=""
+  TARGET_CLAUDE_DIR="${HOME}/.claude"
+fi
 
 # sync_subdir <src_dir> <target_dir>
 # src 내 항목들을 target에 per-item 심링크로 연결
@@ -39,7 +44,7 @@ sync_subdir() {
 }
 
 main() {
-  if [ ! -d "${TARGET_PROJECT}" ]; then
+  if [ -n "${TARGET_PROJECT}" ] && [ ! -d "${TARGET_PROJECT}" ]; then
     printf 'Error: 대상 프로젝트를 찾을 수 없습니다: %s\n' "${TARGET_PROJECT}" >&2
     printf '사용법: %s [프로젝트 경로]\n' "$0" >&2
     exit 1
