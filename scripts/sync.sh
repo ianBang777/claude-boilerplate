@@ -62,19 +62,19 @@ create_links() {
 
   # CLAUDE.md가 존재하면 삭제 여부 확인
   if [ -L "$CLAUDE_HOME/CLAUDE.md" ] || [ -f "$CLAUDE_HOME/CLAUDE.md" ]; then
-    warn "$CLAUDE_HOME/CLAUDE.md 가 존재합니다. AGENTS.md로 대체됩니다."
+    warn "$CLAUDE_HOME/CLAUDE.md 가 존재합니다. boilerplate CLAUDE.md로 대체됩니다."
     read -p "삭제하시겠습니까? (y/N): " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       rm -f "$CLAUDE_HOME/CLAUDE.md"
       info "제거: $CLAUDE_HOME/CLAUDE.md"
     else
-      info "CLAUDE.md 유지. AGENTS.md와 함께 공존합니다."
+      info "CLAUDE.md 유지."
     fi
   fi
 
-  # AGENTS.md 심링크
-  link_file "$BOILERPLATE_DIR/AGENTS.md" "$CLAUDE_HOME/AGENTS.md"
+  # CLAUDE.md 심링크
+  link_file "$BOILERPLATE_DIR/CLAUDE.md" "$CLAUDE_HOME/CLAUDE.md"
 
   # 각 디렉토리 심링크
   link_dir "$BOILERPLATE_DIR/agents"   "$CLAUDE_HOME/agents"
@@ -96,7 +96,7 @@ create_links() {
 
   echo
   info "동기화 완료."
-  info "  AGENTS.md -> $CLAUDE_HOME/AGENTS.md"
+  info "  CLAUDE.md -> $CLAUDE_HOME/CLAUDE.md"
   info "  agents    -> $CLAUDE_HOME/agents"
   info "  commands  -> $CLAUDE_HOME/commands"
   info "  skills    -> $CLAUDE_HOME/skills"
@@ -106,7 +106,7 @@ create_links() {
 }
 
 remove_links() {
-  unlink_path "$CLAUDE_HOME/AGENTS.md"
+  unlink_path "$CLAUDE_HOME/CLAUDE.md"
   unlink_path "$CLAUDE_HOME/agents"
   unlink_path "$CLAUDE_HOME/commands"
   unlink_path "$CLAUDE_HOME/skills"

@@ -47,6 +47,26 @@
             "command": "${PROJECT_ROOT}/hooks/write-guard.sh"
           }
         ]
+      },
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${PROJECT_ROOT}/hooks/agent-start.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${PROJECT_ROOT}/hooks/agent-end.sh"
+          }
+        ]
       }
     ]
   }
