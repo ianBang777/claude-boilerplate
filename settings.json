@@ -48,28 +48,6 @@
           }
         ]
       }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${PROJECT_ROOT}/hooks/logger.sh"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${PROJECT_ROOT}/hooks/context-inject.sh"
-          }
-        ]
-      }
     ]
   }
 }
