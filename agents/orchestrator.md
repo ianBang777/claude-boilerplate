@@ -54,7 +54,7 @@ tools:
 | 복잡한 신규 기능 (계획 필요) | Secretary 팀 (`agents/secretary/index.md`) |
 | Next.js, React, TypeScript, CSS | `agents/specialist/fe-dev.md` |
 | Spring Boot, Kotlin, Supabase, DB | `agents/specialist/be-dev.md` |
-| TypeScript 타입 설계·복잡한 TS 작업 | `agents/specialist/typescript-engineer.md` |
+| TypeScript 타입 설계·복잡한 TS 작업 | `fe-dev` (+ `skills/typescript/SKILL.md` 자동 참조) |
 | AWS/Pulumi 인프라 구축 | `agents/specialist/infra-engineer.md` |
 | 테스트, 버그 재현, QA | `agents/specialist/qa.md` |
 | 코드베이스 이해, 구조 파악 | `agents/specialist/analyzer.md` |

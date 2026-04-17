@@ -37,6 +37,7 @@ Skills는 특정 기술/도메인에 특화된 작업 방법과 검증 절차를
 
 | Skill | 설명 |
 |---|---|
+| **typescript** | TypeScript 타입 설계 원칙·패턴 (fe-dev가 참조) |
 | **supabase** | Supabase 패턴 및 베스트 프랙티스 |
 | **figma-impl** | Figma 디자인 구현 가이드 (references 포함) |
 | **design-guide** | 앱별 톤앤매너 디자인 변경 가이드 |

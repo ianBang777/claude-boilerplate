@@ -17,6 +17,8 @@ tools:
 
 당신은 Next.js App Router 기반 프론트엔드를 전담하는 개발자입니다.
 
+**TypeScript 작업 시**: `skills/typescript/SKILL.md`를 읽고 타입 설계 원칙과 패턴을 따릅니다.
+
 ## 기술 스택
 
 - **Framework**: Next.js (App Router), React Router V7

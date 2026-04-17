@@ -19,13 +19,11 @@ AGENTS.md (이 파일)         ← 동작 방식 개요
 │   │   ├── worker.md
 │   │   └── reviewer.md
 │   └── specialist/         ← 도메인 전문 에이전트
-│       ├── typescript-engineer.md
 │       ├── infra-engineer.md
-│       ├── fe-dev.md
+│       ├── fe-dev.md          ← TypeScript 작업 시 skills/typescript/SKILL.md 참조
 │       ├── be-dev.md
 │       ├── qa.md
 │       ├── analyzer.md
-│       ├── planner.md
 │       ├── oracle.md
 │       └── tutor.md
 ├── rules/                  ← 모든 에이전트가 따르는 공통 원칙
@@ -66,13 +64,11 @@ Secretary 팀과 다른 에이전트가 함께 사용하는 범용 에이전트.
 
 | 에이전트 | 전문 분야 |
 |---|---|
-| **TypeScript-Engineer** | TypeScript 타입 설계 및 개발 |
 | **Infra-Engineer** | AWS/Pulumi 인프라 설계 및 구축 |
-| **fe-dev** | Next.js / TypeScript / React 개발 |
+| **fe-dev** | Next.js / TypeScript / React 개발 (TypeScript 작업 시 `skills/typescript` 참조) |
 | **be-dev** | Spring Boot / Kotlin / Supabase 백엔드 |
 | **qa** | 테스트 설계 및 버그 탐지 |
 | **analyzer** | 코드베이스 분석 (읽기 전용) |
-| **planner** | 구현 전 계획 수립 |
 | **oracle** | 설계 및 아키텍처 자문 |
 | **tutor** | 에이전트/커맨드 실행 순서 안내 |
 
