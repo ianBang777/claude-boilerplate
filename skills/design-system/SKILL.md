@@ -26,6 +26,26 @@ src/
 └── pages/          # 실제 페이지
 ```
 
+## 타이포그래피 필수 규칙
+
+**`p`, `h1`~`h6`, `span` 태그를 직접 사용하지 않는다. 반드시 `MasisiTypography`를 사용한다.**
+
+```tsx
+// ❌ Bad
+<p className="text-sm">일반 텍스트</p>
+<h2 className="text-lg font-bold">제목</h2>
+<span className="text-primary">강조</span>
+
+// ✅ Good
+<MasisiTypography variant="body5_Regular">일반 텍스트</MasisiTypography>
+<MasisiTypography variant="body2_Bold" as="h2">제목</MasisiTypography>
+<MasisiTypography variant="body5_Regular" className="text-primary">강조</MasisiTypography>
+```
+
+variant 체계는 `reference/masisi.md` 참조.
+
+---
+
 ## 디자인 토큰 사용 원칙
 
 - 인라인 색상값 금지: `text-[#123456]` ❌
