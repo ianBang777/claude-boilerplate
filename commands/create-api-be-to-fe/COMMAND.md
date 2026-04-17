@@ -1,8 +1,8 @@
 # /create-api-be-to-fe
 
-`~/Documents/repositories/myfair-server-kotlin` 의 특정 커밋 해시를 시작점으로,
+`~/Documents/repo/myfair-server-kotlin` 의 특정 커밋 해시를 시작점으로,
 그 이후 커밋들에서 추가·변경된 Controller / DTO / Enum 을 분석하여
-`~/Documents/repositories/myfair-client` 의 TypeScript 코드로 변환한다.
+`~/Documents/repo/client` 의 TypeScript 코드로 변환한다.
 
 ## 옵션
 
@@ -19,7 +19,7 @@
 ### 1단계: 커밋 시작점 찾기
 
 ```bash
-cd ~/Documents/repositories/myfair-server-kotlin
+cd ~/Documents/repo/myfair-server-kotlin
 
 # 해시 이후 커밋 목록 확인
 git log <해시>..HEAD --oneline
