@@ -1,7 +1,7 @@
 # Agents
 
 이 저장소는 Task 기반 멀티에이전트 하네스입니다.
-대화가 시작되면 **Orchestrator**가 요청을 분석하고 적절한 에이전트 팀에 위임합니다.
+대화가 시작되면 **Orchestrator**가 요청을 분석하고 **팀 에이전트**에 위임합니다.
 
 ---
 
@@ -10,15 +10,17 @@
 ```
 AGENTS.md (이 파일)         ← 동작 방식 개요
 ├── agents/
-│   ├── orchestrator.md     ← 진입점: 요청 분석 및 위임
+│   ├── orchestrator.md     ← 진입점: 요청 분석 및 팀 에이전트 위임
 │   ├── secretary/
 │   │   └── index.md        ← Secretary 팀: Task 기반 8단계 파이프라인
+│   ├── developer/
+│   │   └── index.md        ← Developer 팀: 개발 작업 specialist 조합 실행
 │   ├── shared/             ← 여러 팀이 공유하는 서브에이전트
 │   │   ├── strategist.md
 │   │   ├── plan-reviewer.md
-│   │   ├── worker.md
+│   │   ├── worker.md       ← 코드 작업 시 specialist 에이전트에 위임
 │   │   └── reviewer.md
-│   └── specialist/         ← 도메인 전문 에이전트
+│   └── specialist/         ← 도메인 전문 에이전트 (팀 에이전트가 호출)
 │       ├── infra-engineer.md
 │       ├── fe-dev.md          ← TypeScript 작업 시 skills/typescript/SKILL.md 참조
 │       ├── be-dev.md
@@ -37,35 +39,40 @@ AGENTS.md (이 파일)         ← 동작 방식 개요
 ## 에이전트 개요
 
 ### Orchestrator (기본 진입점)
-모든 요청의 시작점. 요청의 도메인과 복잡도를 분석하고 적절한 에이전트에 위임합니다.
-직접 코드를 작성하지 않습니다.
+모든 요청의 시작점. 요청의 유형과 복잡도를 분석하고 **팀 에이전트(Secretary/Developer)** 에 위임합니다.
+specialist 에이전트를 직접 호출하지 않습니다.
 
 → `agents/orchestrator.md`
 
 ### Secretary 팀
-복잡한 작업을 위한 8단계 자동 파이프라인 팀.
+계획 수립이 필요한 복잡한 작업을 위한 8단계 자동 파이프라인.
 계획 수립 → 사용자 승인 → 실행 → 품질 검토를 자동화합니다.
-Secretary가 Strategist / Worker / Reviewer 서브에이전트를 Task 도구로 호출합니다.
 
 → `agents/secretary/index.md`
 
+### Developer 팀
+코드 개발 요청을 받아 작업 난이도에 따라 specialist 에이전트를 조합해 실행합니다.
+analyzer로 구조를 파악하고, oracle에 설계를 자문하며, 도메인 specialist에 구현을 위임합니다.
+
+→ `agents/developer/index.md`
+
 ### 공유 서브에이전트 (shared/)
-Secretary 팀과 다른 에이전트가 함께 사용하는 범용 에이전트.
+Secretary 팀이 사용하는 범용 에이전트.
 
 | 에이전트 | 역할 |
 |---|---|
 | **Strategist** | 문제 분석 및 SPEC.md 계획 수립 |
 | **Plan-Reviewer** | 계획 검토 및 승인/재수립 판정 |
-| **Worker** | 코드·문서·인프라 실행 |
+| **Worker** | 코드·문서·인프라 실행 (필요 시 specialist 위임) |
 | **Reviewer** | 결과물 품질 검토 및 승인/재작업 판정 |
 
 ### 전문 에이전트 (specialist/)
-도메인 특화 에이전트. Orchestrator나 Secretary가 직접 호출합니다.
+도메인 특화 에이전트. **Developer 팀 또는 Worker가 호출합니다.**
 
 | 에이전트 | 전문 분야 |
 |---|---|
 | **Infra-Engineer** | AWS/Pulumi 인프라 설계 및 구축 |
-| **fe-dev** | Next.js / TypeScript / React 개발 (TypeScript 작업 시 `skills/typescript` 참조) |
+| **fe-dev** | Next.js / TypeScript / React 개발 (`skills/typescript` 참조) |
 | **be-dev** | Spring Boot / Kotlin / Supabase 백엔드 |
 | **qa** | 테스트 설계 및 버그 탐지 |
 | **analyzer** | 코드베이스 분석 (읽기 전용) |
@@ -76,19 +83,18 @@ Secretary 팀과 다른 에이전트가 함께 사용하는 범용 에이전트.
 
 ## 기본 워크플로우
 
-### 단순 작업 (버그 픽스, 소규모 수정)
+### 개발 작업 (버그 픽스, 기능 구현)
 ```
-Orchestrator → fe-dev 또는 be-dev
-```
-
-### 중간 작업 (기능 확장)
-```
-Orchestrator → analyzer로 구조 파악 → fe-dev 또는 be-dev
+Orchestrator → Developer 팀
+  └── [단순] fe-dev 또는 be-dev
+  └── [중간] analyzer → fe-dev 또는 be-dev
+  └── [복잡] oracle → analyzer → fe-dev + be-dev (병렬) → qa
 ```
 
-### 복잡한 작업 (신규 기능, 설계 변경)
+### 계획이 필요한 작업 (신규 기능, 설계 변경)
 ```
-Orchestrator → oracle 설계 검토 → Secretary 팀 (8단계 파이프라인)
+Orchestrator → Secretary 팀 (8단계 파이프라인)
+  └── Worker → specialist 에이전트 위임
 ```
 
 ### Secretary 팀 파이프라인 (8단계)
