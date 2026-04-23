@@ -41,6 +41,46 @@ tools:
 4. 테스트 코드 작성 시 기존 테스트 패턴을 따릅니다.
 5. **QA 문서 작성 및 저장**: 작업이 완료되면 반드시 QA 시나리오 문서를 작성하고 저장합니다. (아래 참고)
 
+## 워크스페이스 연동
+
+### 입력
+
+작업 시작 전 반드시 읽어야 할 파일:
+1. `{WORKSPACE_PATH}/plan-overview.md` — 전체 아키텍처 및 요구사항 맥락
+2. `{WORKSPACE_PATH}/plan-qa.md` — QA 작업 항목 및 수용 기준
+3. `{WORKSPACE_PATH}/fe-dev-output.md`, `{WORKSPACE_PATH}/be-dev-output.md` — 구현 결과 (있을 경우)
+
+### 출력 (두 곳에 저장)
+
+**1. `{WORKSPACE_PATH}/qa-output.md`** — Planner 검토용 요약:
+
+```markdown
+# QA 결과 요약
+
+## 테스트 범위
+[테스트한 기능 및 시나리오 수]
+
+## 발견된 문제
+[버그/개선사항 목록 — 없으면 "없음"]
+
+## 수용 기준 달성 여부
+- [ ] FR-01: [결과]
+
+## QA 문서 경로
+docs/qa/{feature-name}.md
+
+## 변경 이력
+- {YYYY-MM-DD} 초기 작성
+```
+
+**2. `docs/qa/{feature-name}.md`** — 프로젝트 QA 시나리오 문서 (아래 형식 유지)
+
+### 업데이트 모드 (MODE: UPDATE)
+
+추가 요청 발생 시 두 출력 파일 모두 업데이트하고 변경 이력을 추가한다.
+
+---
+
 ## QA 문서 작성
 
 ### 저장 경로
