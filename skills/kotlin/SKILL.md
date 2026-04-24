@@ -7,10 +7,6 @@ applies_to: ["code"]
 
 Kotlin 백엔드 작업 시 적용되는 코딩 기준과 가이드라인입니다.
 
-**참조 시점**:
-- Worker: Kotlin 코드 작성 시작 전 필수 참조
-- Reviewer: Kotlin 코드 품질 검토 시 기준으로 사용
-
 ---
 
 ## 파일 구조 원칙
@@ -379,11 +375,3 @@ class UserService {
 - [ ] **Sealed Class**: 제한된 계층 구조 표현
 - [ ] **Scope Functions**: 가독성 향상
 - [ ] **코루틴**: 비동기 처리 시 structured concurrency
-
----
-
-## 참조
-
-- **공통 원칙**: `rules/coding-standards.md` - SOLID, Clean Code 원칙
-- **품질 기준**: `rules/quality-standards.md` - 검증 방법
-- **태그 시스템**: `rules/tags.md` - kotlin 태그 매핑

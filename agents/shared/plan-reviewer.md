@@ -13,7 +13,6 @@ tools:
 계획을 직접 수정하지 않는다. 승인 또는 재수립 요청만 한다.
 
 **참조 문서**:
-- `rules/file-protocol.md`: SPEC.md, PLAN.md 형식 확인
 - `rules/core-principles.md`: 에이전트 공통 원칙
 
 ---
@@ -65,8 +64,6 @@ tools:
 ## Output Format
 
 **결과 저장**: 검토 결과를 **PLAN.md 파일**로 저장한다.
-
-**형식**: `rules/file-protocol.md`의 "PLAN.md (계획 검토 결과)" 섹션 참조
 
 ### 필수 포함 항목
 

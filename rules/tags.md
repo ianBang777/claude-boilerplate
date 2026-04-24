@@ -7,7 +7,7 @@ applies_to: ["all"]
 
 **이 파일은 태그 시스템의 Single Source of Truth (SSOT)입니다.**
 
-Secretary와 Worker는 이 파일만 참조하여 작업에 필요한 태그와 문서를 결정합니다.
+Tags를 전달받은 모든 에이전트는 이 파일을 참조하여 작업에 필요한 Rules/Skills를 결정합니다.
 
 ---
 
@@ -27,7 +27,7 @@ Secretary와 Worker는 이 파일만 참조하여 작업에 필요한 태그와 
 | Tag | 설명 | Rules | Skills |
 |-----|------|-------|--------|
 | **typescript** | TypeScript 코드 작성 | coding-standards.md | - |
-| **kotlin** | Kotlin 코드 작성 | coding-standards.md | kotlin.md |
+| **kotlin** | Kotlin 코드 작성 | coding-standards.md | kotlin/SKILL.md |
 
 ### 도메인/계층
 
@@ -63,7 +63,7 @@ Secretary와 Worker는 이 파일만 참조하여 작업에 필요한 태그와 
 | **code** | 일반 코드 작성 | coding-standards.md, quality-standards.md | code-verify.md |
 | **refactor** | 리팩토링 | coding-standards.md | - |
 | **bugfix** | 버그 수정 | coding-standards.md | - |
-| **test** | 테스트 작성 | quality-standards.md | - |
+| **test** | 테스트 작성 | quality-standards.md, testing-standards.md | - |
 | **docs** | 문서 작성 | - | - |
 
 ### 검증/품질
@@ -75,9 +75,9 @@ Secretary와 Worker는 이 파일만 참조하여 작업에 필요한 태그와 
 
 ---
 
-## Worker 사용 방법
+## 사용 방법
 
-Worker는 작업 시작 시 전달받은 Tags를 기반으로 필요한 Rules/Skills를 자동으로 로드합니다.
+Tags를 전달받은 에이전트는 작업 시작 시 이 파일을 기반으로 필요한 Rules/Skills를 결정합니다.
 
 ### 로딩 프로세스
 
@@ -87,17 +87,20 @@ Worker는 작업 시작 시 전달받은 Tags를 기반으로 필요한 Rules/Sk
 4. 중복 문서는 한 번만 읽기
 5. 문서 내용을 참고하여 작업 수행
 
+### 경로 규칙
+
+- Rules 컬럼 파일: `rules/[파일명]` 경로에서 로드
+- Skills 컬럼 파일: `skills/[파일명]` 경로에서 로드
+
 ### 예시
 
 ```
 Tags: ["typescript", "api", "oop"]
 
 자동 로드:
-  1. rules/coding-standards.md (typescript, api, oop)
-  2. rules/quality-standards.md (api)
+  1. rules/coding-standards.md
+  2. rules/quality-standards.md
 ```
-
-**참고**: TypeScript, Pulumi 등 전문 작업은 Secretary가 TypeScript-Engineer, Infra-Engineer Agent를 직접 호출합니다.
 
 ---
 
@@ -107,48 +110,36 @@ Tags: ["typescript", "api", "oop"]
 ```
 Tags: ["typescript", "backend", "api", "oop"]
 
-자동 로드 (Worker):
+자동 로드:
   - rules/coding-standards.md
   - rules/quality-standards.md
-
-전문 작업 시:
-  Secretary → Task(TypeScript-Engineer)
 ```
 
 ### Pulumi AWS 인프라 구축
 ```
 Tags: ["pulumi", "aws", "infra"]
 
-자동 로드 (Worker):
+자동 로드:
   - rules/quality-standards.md
   - skills/pulumi-verify.md
-
-전문 작업 시:
-  Secretary → Task(Infra-Engineer)
 ```
 
 ### React 프론트엔드 개발
 ```
 Tags: ["typescript", "frontend", "oop"]
 
-자동 로드 (Worker):
+자동 로드:
   - rules/coding-standards.md
   - rules/quality-standards.md
   - skills/frontend-verify.md
-
-전문 작업 시:
-  Secretary → Task(TypeScript-Engineer)
 ```
 
 ### 레거시 코드 리팩토링
 ```
 Tags: ["typescript", "refactor", "clean-code"]
 
-자동 로드 (Worker):
+자동 로드:
   - rules/coding-standards.md
-
-전문 작업 시:
-  Secretary → Task(TypeScript-Engineer)
 ```
 
 ### 데이터베이스 마이그레이션
@@ -163,10 +154,10 @@ Tags: ["database"]
 ```
 Tags: ["kotlin", "backend", "api", "oop"]
 
-자동 로드 (Worker):
+자동 로드:
   - rules/coding-standards.md
   - rules/quality-standards.md
-  - skills/kotlin.md
+  - skills/kotlin/SKILL.md
 ```
 
 ---

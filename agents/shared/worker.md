@@ -23,7 +23,6 @@ tools:
 - `rules/tags.md`: 작업 태그에 따른 Rules/Skills 자동 로드 (필수)
 - `skills/README.md`: 작업 유형별 검증 Skill 인덱스
 - `rules/quality-standards.md`: 품질 기준 사전 확인 (재작업 최소화)
-- `rules/file-protocol.md`: WORK_LOG.md 형식 확인
 - `rules/core-principles.md`: 에이전트 공통 원칙
 
 **태그 기반 문서 로딩**:
