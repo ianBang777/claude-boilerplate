@@ -10,8 +10,8 @@ applies_to: ["code"]
 # migrate-dashboard
 
 로컬 CSV 데이터를 사용하는 대시보드 페이지를 분석하여,
-실제 프로젝트의 admin 대시보드 경로에 동일한 UI를 구현하고
-CSV를 대체하는 API를 연동한다.
+실제 프로젝트의 admin 대시보드 경로에 동일한 UI를 이식한다.
+
 
 ---
 
@@ -70,6 +70,33 @@ CSV를 대체하는 API를 연동한다.
 - 임포트된 컴포넌트·유틸·타입 재귀 파악
 - admin 프로젝트에 이미 동일하거나 유사한 컴포넌트가 있는지 확인
 
+#### UI 인벤토리 체크리스트 (필수 — 완성 전까지 2단계 진행 금지)
+
+소스 페이지를 읽고 아래 표를 **빠짐없이** 작성한다.
+
+**섹션 목록**:
+
+| # | 섹션명 (원문 그대로) | 설명 |
+|---|---|---|
+| 1 | (소스에서 복사) | 섹션 역할 |
+
+**KPI 카드 목록**:
+
+| # | 섹션 | label (원문) | accent | sub 텍스트 패턴 | 데이터 소스 |
+|---|---|---|---|---|---|
+| 1 | (섹션명) | (소스에서 복사) | (색상) | YoY% · 비교문구 / 고정문구 | (필드명) |
+
+**차트 목록**:
+
+| # | 섹션 | title (원문) | hint (원문) | 라인 수 / 시리즈명 | 데이터 소스 |
+|---|---|---|---|---|---|
+| 1 | (섹션명) | (소스에서 복사) | (소스에서 복사) | 단일/이중/3라인 · 시리즈명 | (필드명) |
+
+**기록 원칙**:
+- 섹션명, 카드 label, 차트 title·hint 등 **모든 텍스트는 소스에서 복사**한다. 임의 생성 금지.
+- 표가 완성된 후 2단계로 진행한다.
+- 표 항목 수와 실제 소스 항목 수가 일치하는지 재확인한다.
+
 ---
 
 ### 2단계: CSV-DTO 필드 매핑 및 데이터 충족 여부 확인
@@ -95,7 +122,49 @@ CSV에서 사용하는 필드와 DTO 필드를 대조하여 다음 표를 작성
 - `집계 필요`: DTO가 월별 데이터인데 화면에서 분기/연도별 집계 필요 → 프론트 집계 유틸 작성
 - `누락`: DTO에 없고 계산도 불가능 → **`[ASK]`** 처리
 
-#### 2-2. 불일치 항목 처리 원칙
+#### 2-2. 전년 동기간 비교 KPI 처리
+
+원본 대시보드는 KPI 카드 sub 텍스트에 `vs {전년도} 동기간 ~{M}/{D} (₩{금액})` 형태의 비교 문구를 표시한다.
+이 기능은 일 단위 `DailyRow`와 `compareSamePeriod` 유틸에 의존한다.
+
+**DTO가 월별 배열만 내려올 때 동기간 합산 계산법**:
+
+1. 오늘 날짜 기준 (today.month, today.day) 확인
+2. 전년도 동기간 = `year-1`의 1월 ~ today.month까지 월별 데이터 합산
+   - today.month가 완전한 달이 아닌 경우(진행 중인 달) 해당 월 제외 후 `~today.month/today.day` 라벨
+3. 비교 문구 포맷:
+   ```
+   // 진행 중인 연도(동기간)
+   `vs ${compareYear} 동기간 ~${today.month}/${today.day} (${formatKRW(prevValue)})`
+   
+   // 완료된 기간(전체 연간)
+   `vs ${compareYear} (${formatKRW(prevValue)})`
+   ```
+
+**구현 결정 트리**:
+
+| 상황 | 처리 |
+|---|---|
+| DTO에 일 단위 데이터 있음 | `compareSamePeriod` 유틸 방식 그대로 적용 |
+| DTO가 월별 배열만 있음 | 1~(today.month-1)월 합산으로 근사 동기간 계산 |
+| 동기간 데이터 자체 없음 | `[ASK]` 처리 후 단순 전년 전체 비교로 폴백 또는 생략 |
+
+**KPI 카드 sub 필드 구성 패턴** (반드시 원본 패턴 유지):
+
+```tsx
+sub={
+  <span>
+    <YoYBadge cur={cur} prev={prev} /> · {prevLabelText(formatKRW(prev))}
+  </span>
+}
+```
+
+sub 텍스트에서 단순 % 증감률(`TrendIndicator` pct만)만 표시하는 것은 **원본 누락**이다.
+반드시 비교 문구(`vs {연도} 동기간 ~M/D (₩금액)`)를 함께 표시한다.
+
+---
+
+#### 2-3. 불일치 항목 처리 원칙
 
 **`[ASK]` — 구현 전 사용자에게 반드시 공지하고 확인**:
 - DTO에 해당 데이터가 없고 다른 필드로도 계산이 불가능한 경우
@@ -271,6 +340,25 @@ export function useFetch{Domain}Statistics(_params: {Domain}SearchRequest) {
 - `BizDashboardFilter`로 연도/기간 필터를 처리한다.
 - 대시보드 프로젝트의 인라인 스타일·하드코딩 색상을 admin 디자인 토큰으로 교체한다.
 
+**텍스트 일치 원칙 (필수)**:
+
+이식 중 아래 텍스트 요소는 **반드시 원본 소스에서 복사**한다. 임의 생성 금지.
+
+| 텍스트 요소 | 원칙 |
+|---|---|
+| 섹션 제목 (`<h2>`, section header) | 원문 그대로 복사 |
+| KPI 카드 `label` prop | 원문 그대로 복사 |
+| 차트 `title` prop | 원문 그대로 복사 |
+| 차트 `hint` prop | 원문 그대로 복사 |
+| 차트 시리즈 `name` prop | 원문 그대로 복사 |
+| 축 라벨, tooltip 포맷터 문구 | 원문 그대로 복사 |
+| KPI 카드 `sub` 텍스트의 고정 문구 | 원문 그대로 복사 |
+
+Typography 컴포넌트 교체(예: `<h2>` → `<Text>`) 및 스타일 변경은 허용된다.
+단, 컴포넌트 교체 시에도 **텍스트 내용** 자체는 변경하지 않는다.
+
+이식 완료 후 1단계 UI 인벤토리 체크리스트와 대조하여 누락 항목이 없는지 재확인한다.
+
 #### 6-6. 페이지 파일
 
 ```
@@ -284,6 +372,15 @@ src/domain/biz/{domain}/components/templates/{Domain}DashboardTemplate.tsx
 ### 7단계: 검증
 
 **추가 확인 항목** (대시보드 이관 특화):
+
+**완성도 체크 (1단계 인벤토리 대조)**:
+- [ ] 1단계 KPI 카드 목록의 **모든 항목**이 이식됐는가?
+- [ ] 1단계 차트 목록의 **모든 항목**이 이식됐는가?
+- [ ] 1단계 섹션 목록의 **모든 섹션**이 구현됐는가?
+- [ ] 각 KPI 카드의 label, 차트의 title·hint가 원문과 **정확히 일치**하는가?
+- [ ] KPI 카드 sub 텍스트에 비교 문구(`vs {연도} 동기간 ~M/D (₩금액)`)가 포함됐는가?
+
+**기능 체크**:
 - [ ] 차트/KPI 카드가 API 데이터로 정상 렌더링되는가?
 - [ ] 연도별/분기별/월별 필터 전환이 정상 작동하는가?
 - [ ] DTO가 월별 데이터인 경우 집계 결과가 올바른가? (CSV 값과 비교)
@@ -336,104 +433,13 @@ Developer
 
 **[ASK] 항목이 있으면 analyzer가 결과 보고 후, 사용자 확인을 받고 fe-dev를 호출한다.**
 
----
+## 레퍼런스
 
-## 레퍼런스: finance/sales → dashboard/biz/finance 이관 예시
+실제 이관 사례는 `skills/migrate-dashboard/reference/` 디렉토리를 참고한다.
 
-실제 이관 사례를 참고한다.
-
-### 파일 구조 대응
-
-| 대시보드 원본 | Admin 이관 결과 |
+| 파일 | 도메인 |
 |---|---|
-| `src/app/finance/sales/page.tsx` | `src/app/(layout)/dashboard/biz/finance/page.tsx` |
-| `src/domain/finance-sales/components/SalesRevenuePage.tsx` | `src/domain/biz/finance/components/templates/FinanceDashboardTemplate.tsx` |
-| `src/domain/finance-sales/lib/fin-buckets.ts` | `src/domain/biz/finance/lib/aggregate.ts` (연도/분기 집계) |
-| `src/components/shell/hooks/useUrlFilters.ts` | `src/domain/biz/common/components/molecules/BizDashboardFilter.tsx` |
-
-### CSV-DTO 매핑 예시 (finance/sales)
-
-대시보드 CSV (`balancing-sales-by-year-month/data.csv`):
-```
-year, month, total_sales, total_profit, cnt
-```
-
-Admin DTO 예시:
-```typescript
-interface FinanceSalesMonthlyItem {
-  year: number;
-  month: number;
-  sales: number;    // total_sales에 대응
-  purchase: number; // total_profit은 sales - purchase로 프론트 계산
-  count: number;    // cnt에 대응 (이름 다름)
-}
-```
-
-**[INFO]** `total_profit` = `sales - purchase` 로 프론트에서 계산하여 처리함.
-
-### 기간 필터 — BizDashboardFilter 사용
-
-```typescript
-// src/domain/biz/common/schema/bizDashboardSearchParamsSchema.ts
-export const AVAILABLE_BIZ_YEARS = [2023, 2024, 2025]; // 2023년부터
-export const BIZ_PERIOD_OPTIONS = ["all", "quarterly", "monthly"] as const;
-export type BizPeriodType = (typeof BIZ_PERIOD_OPTIONS)[number];
-```
-
-```tsx
-// FinanceDashboardTemplate.tsx
-const searchParams = useSearchParams();
-const { year, period } = parseSearchParamsWithZod(bizDashboardSearchParamsSchema, searchParams);
-
-<BizDashboardFilter />  {/* 연도/기간 필터 UI — URL searchParams 자동 동기화 */}
-```
-
-### 월별 데이터 집계 패턴
-
-DTO가 월별 배열로 내려오는 경우, 연도별/분기별은 프론트에서 집계한다.
-
-```typescript
-// src/domain/biz/finance/lib/aggregate.ts
-function aggregateByQuarter(monthlyRows: FinanceSalesMonthlyItem[]) {
-  // Q1(1-3월), Q2(4-6월), Q3(7-9월), Q4(10-12월) 그룹핑 후 합산
-}
-
-function aggregateByYear(monthlyRows: FinanceSalesMonthlyItem[]) {
-  // 연도로 그룹핑 후 합산
-}
-```
-
-### API 훅 패턴
-
-```typescript
-// src/api/query/finance/useFetchFinanceStatistics.ts
-export function useFetchFinanceStatistics(params: FinanceByPeriodSearchRequest) {
-  return useQuery({
-    queryKey: ["finance-statistics", params],
-    queryFn: () => FinanceStatisticsRepository.findAllBalancingByFinanceYear(params),
-  });
-}
-```
-
-### 공통 차트 컴포넌트 — LineChartCard
-
-```tsx
-// src/domain/biz/common/components/atoms/LineChartCard.tsx
-<LineChartCard
-  title="매출 추이"
-  hint="월별 매출 및 전년 동기 비교"
-  data={chartData}  // { xLabel, sales, prevSales }[]
-  xKey="xLabel"
-  lines={[
-    { dataKey: "sales", name: "매출", color: "#3b82f6" },
-    { dataKey: "prevSales", name: "전년", color: "#94a3b8" },
-  ]}
-  yTickFormatter={(v) => formatKRW(v)}
-/>
-```
-
-**다른 차트 타입이 필요한 경우**: `LineChartCard` 패턴을 참고하여
-`src/domain/biz/common/components/atoms/` 에 새 공통 컴포넌트를 먼저 작성한다.
+| `reference/finance.md` | finance/sales → dashboard/biz/finance |
 
 ---
 
