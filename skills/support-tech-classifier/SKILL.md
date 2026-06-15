@@ -1,3 +1,8 @@
+---
+name: support-tech-classifier
+description: Slack support-tech 채널 메시지를 분석해 Notion 태스크로 분류·등록한다. 트리거: support-tech 메시지 처리, 문의 분류 요청 등.
+---
+
 # Support Tech Classifier
 
 슬랙 support-tech 채널의 메시지를 분석하여 노션 태스크를 등록한다.

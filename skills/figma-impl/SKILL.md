@@ -1,5 +1,6 @@
 ---
-description: Figma URL로 디자인 컨텍스트를 받아 현재 프로젝트 스택에 맞게 UI를 구현할 때 쓰는 슬래시 커맨드.
+name: figma-impl
+description: Figma URL로 디자인 컨텍스트를 받아 현재 프로젝트 스택에 맞게 UI를 구현할 때 쓰는 스킬. 트리거: Figma URL 제공, "이 디자인 구현해줘" 등.
 ---
 
 # /figma-impl

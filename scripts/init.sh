@@ -22,8 +22,8 @@ error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
 [ "${1:-}" = "--dry" ] && DRY_RUN=true
 
-# sync.sh가 관리하는 항목
-MANAGED_NAMES=(CLAUDE.md agents commands skills rules hooks settings.json)
+# sync.sh가 관리하는 항목 (agents·commands는 과거 버전 잔재 정리용)
+MANAGED_NAMES=(CLAUDE.md skills rules hooks settings.json agents commands)
 
 # ── 1. 초기화 대상 수집 ──────────────────────────────────────────────────────
 

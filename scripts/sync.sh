@@ -77,8 +77,6 @@ create_links() {
   link_file "$BOILERPLATE_DIR/CLAUDE.md" "$CLAUDE_HOME/CLAUDE.md"
 
   # 각 디렉토리 심링크
-  link_dir "$BOILERPLATE_DIR/agents"   "$CLAUDE_HOME/agents"
-  link_dir "$BOILERPLATE_DIR/commands" "$CLAUDE_HOME/commands"
   link_dir "$BOILERPLATE_DIR/skills"   "$CLAUDE_HOME/skills"
   link_dir "$BOILERPLATE_DIR/rules"    "$CLAUDE_HOME/rules"
   link_dir "$BOILERPLATE_DIR/hooks"    "$CLAUDE_HOME/hooks"
@@ -97,8 +95,6 @@ create_links() {
   echo
   info "동기화 완료."
   info "  CLAUDE.md -> $CLAUDE_HOME/CLAUDE.md"
-  info "  agents    -> $CLAUDE_HOME/agents"
-  info "  commands  -> $CLAUDE_HOME/commands"
   info "  skills    -> $CLAUDE_HOME/skills"
   info "  rules     -> $CLAUDE_HOME/rules"
   info "  hooks     -> $CLAUDE_HOME/hooks"
@@ -107,8 +103,6 @@ create_links() {
 
 remove_links() {
   unlink_path "$CLAUDE_HOME/CLAUDE.md"
-  unlink_path "$CLAUDE_HOME/agents"
-  unlink_path "$CLAUDE_HOME/commands"
   unlink_path "$CLAUDE_HOME/skills"
   unlink_path "$CLAUDE_HOME/rules"
   unlink_path "$CLAUDE_HOME/hooks"

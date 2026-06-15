@@ -1,4 +1,12 @@
-# /create-api-be-to-fe
+---
+name: create-api-be-to-fe
+description: >
+  Kotlin 백엔드 커밋(해시 이후)에서 추가·변경된 Controller/DTO/Enum을 분석해
+  TypeScript API 코드로 변환합니다. 트리거: "BE API를 FE로 변환", "코틀린 DTO를
+  타입스크립트로". 필수 옵션: --hash <커밋해시> (없으면 해시를 먼저 요청).
+---
+
+# Create API (BE → FE)
 
 `~/Documents/repo/myfair-server-kotlin` 의 특정 커밋 해시를 시작점으로,
 그 이후 커밋들에서 추가·변경된 Controller / DTO / Enum 을 분석하여

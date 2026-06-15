@@ -1,3 +1,8 @@
+---
+name: support-tech-reaction
+description: Slack 리액션 이벤트를 처리해 연결된 Notion 태스크 상태를 업데이트한다. 트리거: support-tech 리액션 이벤트 처리 등.
+---
+
 # Support Tech Reaction
 
 슬랙 리액션 이벤트를 처리하여 Notion 태스크를 업데이트한다.

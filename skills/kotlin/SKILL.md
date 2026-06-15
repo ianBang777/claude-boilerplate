@@ -1,6 +1,6 @@
 ---
-tags: ["kotlin", "backend", "code"]
-applies_to: ["code"]
+name: kotlin
+description: Kotlin 백엔드 코드를 작성·리뷰할 때 적용하는 코딩 기준과 패턴 가이드. 트리거: Kotlin(.kt) 파일 작업, 백엔드 구현 등.
 ---
 
 # Kotlin Coding Standards

@@ -1,4 +1,12 @@
-# /daily-review
+---
+name: daily-review
+description: >
+  오늘 작업한 변경사항을 요약하고 배포 전 확인 포인트를 정리합니다.
+  트리거: "오늘 작업 정리", "데일리 리뷰", "배포 전 점검" 등.
+  옵션: --branch <name> / --since <when> / --file <path>
+---
+
+# Daily Review
 
 오늘 작업한 변경사항을 요약하고, 배포 전 확인이 필요한 포인트를 정리합니다.
 

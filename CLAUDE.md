@@ -22,12 +22,13 @@
 
 
 작업 시 아래 공용 규칙을 항상 따른다. 충돌 시 우선순위는
-[.claude/rules/README.md](./.claude/rules/README.md)를 따른다.
+[rules/README.md](./rules/README.md)를 따른다.
 
-- @.claude/rules/00-agent-harness.md — 작업 방식 (최상위)
-- @.claude/rules/01-general-engineering.md — 일반 개발 기본기
-- @.claude/rules/02-oop-design.md — 객체지향 · 설계
-- @.claude/rules/03-tdd.md — 테스트 주도 개발
-- @.claude/rules/04-frontend.md — 프론트엔드
-- @.claude/rules/05-typescript.md — TypeScript 기본 규칙
-- @.claude/rules/06-review-checklist.md — 완료 게이트 (리뷰 체크리스트)
+- @rules/00-agent-harness.md — 작업 방식 (최상위)
+- @rules/01-general-engineering.md — 일반 개발 기본기
+- @rules/02-oop-design.md — 객체지향 · 설계
+- @rules/03-tdd.md — 테스트 주도 개발
+- @rules/04-frontend.md — 프론트엔드
+- @rules/05-typescript.md — TypeScript 기본 규칙
+
+완료·리뷰 시점의 점검은 `review-checklist` 스킬을 사용한다 (항상 로드 대신 필요할 때만).
