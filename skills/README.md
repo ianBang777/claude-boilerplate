@@ -30,10 +30,9 @@ description: 무엇을 하는지 + 언제 트리거되는지.
 | Skill | 설명 |
 |---|---|
 | `commit-convention` | staged 변경을 분석해 Conventional Commits 메시지 작성 |
-| `review-checklist` | 작업 완료·PR 전 위반 신호 점검 게이트 (00~05 규칙 기반) |
+| `review-checklist` | 작업 완료·PR 전 위반 신호 점검 게이트 (CLAUDE.md·01~05 기반) |
 | `daily-review` | 오늘 변경 요약 + 배포 전 확인 포인트 (`/daily-review`) |
 | `create-api-be-to-fe` | Kotlin 백엔드 커밋 → TypeScript API 코드 변환 (`--hash` 필요) |
-| `design-token-apply` | 디자인 토큰 변경 → sementic-token.json 갱신 + build 자동화 |
-| `design-system` | 디자인 시스템 구조·컴포넌트 라이브러리(Madix·Masisi) 가이드 |
+| `design-token-apply` | 디자인 토큰 변경 → sementic-tokens.json 갱신 + build 자동화 |
 | `kotlin` | Kotlin 백엔드 코딩 기준·가이드 |
 | `todo` | 옵시디언 볼트 데일리 할 일 관리 — 요약·추가·완료·노트·히스토리 (`/todo`) |

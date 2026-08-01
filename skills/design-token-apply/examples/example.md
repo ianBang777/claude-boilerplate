@@ -44,9 +44,9 @@ space-only-dark.json
 }
 ```
 
-### 2단계: sementic-token.json에 변경사항 반영
+### 2단계: sementic-tokens.json에 변경사항 반영
 
-프로젝트 내 `packages/token-parser/sementic-token.json`의 `root` 키 아래 해당 토큰 교체:
+프로젝트 내 `packages/token-parser/tokens/sementic-tokens.json`의 `root` 키 아래 해당 토큰 교체:
 
 **변경 전:**
 ```json
