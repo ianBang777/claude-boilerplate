@@ -10,7 +10,7 @@ worktree를 **client 리포 밖**(`../worktrees/<folder>`)에 만들어 **별도
 **드라이버**: `scripts/wt.sh` (이 skill 폴더 기준). 모든 git 작업은 이 스크립트로 수행한다.
 
 - worktree 경로: `<client의 부모>/worktrees/<folder>` (예: `/Users/ian/Documents/repo/worktrees/`)
-- 폴더명 = 브랜치명의 `/` → `-` 치환
+- 폴더명 = `A`,`B`,`C`… 알파벳 슬롯 (create 시 빈 첫 글자 자동 할당). worktree를 rebase 후 재사용하므로 브랜치명 기반 폴더명은 쓰지 않는다.
 - client와 worktree는 `.git`을 공유 → 브랜치 ref가 즉시 공유됨
 
 ## 서브커맨드
@@ -18,7 +18,7 @@ worktree를 **client 리포 밖**(`../worktrees/<folder>`)에 만들어 **별도
 스크립트 실행 시 **경로는 절대경로**로 호출한다: `bash ~/.claude/skills/worktrees/scripts/wt.sh <sub> [args]`. (실제 실행 시 `~`를 펼친 절대경로 사용.)
 
 ### `/worktrees create <브랜치명>`
-현재 브랜치 기준으로 새 worktree를 만들고 `yarn install` 후 새 Cursor 창으로 연다.
+현재 브랜치 기준으로 새 worktree를 **빈 알파벳 슬롯**(A,B,C…)에 만들고 `yarn install` 후 새 Cursor 창으로 연다.
 ```
 bash ~/.claude/skills/worktrees/scripts/wt.sh create <브랜치명>
 ```
@@ -32,12 +32,12 @@ bash ~/.claude/skills/worktrees/scripts/wt.sh list
 ```
 
 ### `/worktrees sync <이름>`
-worktree의 커밋을 client에서 **직접 병합할 수 있도록 브랜치를 확인/동기화**한다. **실제 merge는 하지 않는다**(사용자가 직접).
+worktree의 커밋을 client에서 **직접 병합할 수 있도록 브랜치를 확인/동기화**한다. **실제 merge는 하지 않는다**(사용자가 직접). `<이름>`은 폴더명(알파벳 슬롯).
 ```
 bash ~/.claude/skills/worktrees/scripts/wt.sh sync <이름>
 ```
 - 정상 브랜치: `.git` 공유라 client에 **이미 동일 SHA로 존재** → "준비됨" + 병합 명령 안내.
-- detached HEAD: 그 커밋에 폴더명으로 브랜치 생성.
+- detached HEAD: 그 커밋에 `wt-<폴더명>` 브랜치 생성.
 - 스크립트가 안내한 병합 명령(`git merge <브랜치>`)은 **사용자가 직접 실행**하도록 그대로 전달한다. 이 skill이 대신 merge/push하지 않는다.
 - sync 후 **worktree를 제거할지 물어본다**(그때그때 다름). 제거 원하면 `remove` 실행.
 

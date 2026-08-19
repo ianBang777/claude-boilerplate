@@ -7,7 +7,8 @@
 # 설계:
 #   - worktree는 client 리포 밖 형제 폴더(../worktrees/<folder>)에 생성한다.
 #     (내부 .claude/worktrees는 파일워처/tsserver 부하로 Cursor를 느리게 함)
-#   - 폴더명은 브랜치명의 "/"를 "-"로 치환한 값.
+#   - 폴더명은 A,B,C… 알파벳 슬롯. worktree를 rebase 후 재사용하므로
+#     브랜치명 기반 폴더명은 금방 어긋난다 — 브랜치와 무관한 슬롯 이름을 쓴다.
 #   - client와 worktree는 .git을 공유하므로 브랜치 ref가 즉시 공유된다.
 #
 set -euo pipefail
@@ -19,14 +20,26 @@ WT_BASE="${WT_BASE:-"$(dirname "$MAIN_ROOT")/worktrees"}"
 
 die() { echo "❌ $*" >&2; exit 1; }
 
-# 브랜치명 → 폴더명
+# 브랜치명 → 폴더명 (레거시 폴더 해석용)
 folder_of() { echo "${1//\//-}"; }
 
-# 이름(브랜치명 또는 폴더명) → worktree 절대경로
+# 이름(폴더명 또는 브랜치명) → worktree 절대경로
 path_of() {
   local name="$1"
-  local folder; folder="$(folder_of "$name")"
-  echo "$WT_BASE/$folder"
+  if [ -d "$WT_BASE/$name" ]; then
+    echo "$WT_BASE/$name"
+    return
+  fi
+  echo "$WT_BASE/$(folder_of "$name")"
+}
+
+# 비어 있는 첫 알파벳 슬롯
+next_letter() {
+  local l
+  for l in A B C D E F G H I J K L M N O P Q R S T U V W X Y Z; do
+    [ -e "$WT_BASE/$l" ] || { echo "$l"; return; }
+  done
+  die "A~Z 슬롯이 모두 사용 중입니다. 먼저 remove로 정리하세요."
 }
 
 cmd_create() {
@@ -38,13 +51,13 @@ cmd_create() {
   start_point="$(git rev-parse HEAD)"
   start_branch="$(git rev-parse --abbrev-ref HEAD)"
 
-  local path; path="$(path_of "$branch")"
-  [ -e "$path" ] && die "이미 존재하는 경로: $path"
   git -C "$MAIN_ROOT" show-ref --verify --quiet "refs/heads/$branch" \
     && die "이미 존재하는 브랜치: $branch"
 
   mkdir -p "$WT_BASE"
-  echo "▶ worktree 생성: $branch  (기준: $start_branch @ ${start_point:0:9})"
+  local folder; folder="$(next_letter)"
+  local path="$WT_BASE/$folder"
+  echo "▶ worktree 생성: 슬롯 $folder ← $branch  (기준: $start_branch @ ${start_point:0:9})"
   git -C "$MAIN_ROOT" worktree add -b "$branch" "$path" "$start_point"
 
   echo "▶ 의존성 설치: yarn install"
@@ -103,8 +116,8 @@ cmd_sync() {
   [ "$dirty" != "0" ] && echo "⚠ worktree에 미커밋 변경 $dirty건 — 커밋해야 sync에 반영됩니다."
 
   if [ "$wt_branch" = "HEAD" ]; then
-    # detached: 폴더명으로 브랜치 생성
-    local newb; newb="$(folder_of "$name")"
+    # detached: 폴더명 기반으로 브랜치 생성 (알파벳 슬롯이라 wt- prefix)
+    local newb; newb="wt-$(folder_of "$name")"
     git -C "$MAIN_ROOT" show-ref --verify --quiet "refs/heads/$newb" \
       && die "detached HEAD인데 브랜치 '$newb'가 이미 존재합니다. 다른 이름으로 처리하세요."
     git -C "$MAIN_ROOT" branch "$newb" "$wt_head"
