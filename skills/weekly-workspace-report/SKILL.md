@@ -10,7 +10,7 @@ description: 주간 워크스페이스 사용자 리포트(경로별 조회수·
 ## 사전 조건
 
 - **BigQuery MCP**(`toolbox-bigquery`)의 `execute_sql`이 사용 가능해야 한다. 없으면 중단하고 사용자에게 알린다.
-- 저장 폴더: `/Users/ian/Documents/MyfairDevVault/Reports/워크스페이스 주간 리포트/` (없으면 생성).
+- 저장 폴더: `/Users/ian/dev/MyfairDevVault/Reports/워크스페이스 주간 리포트/` (없으면 생성).
 
 ## 절차
 
@@ -199,7 +199,7 @@ tags:
 
 ## 저장
 
-- 경로: `/Users/ian/Documents/MyfairDevVault/Reports/워크스페이스 주간 리포트/{tgt_mon} 워크스페이스 주간 리포트.md`
+- 경로: `/Users/ian/dev/MyfairDevVault/Reports/워크스페이스 주간 리포트/{tgt_mon} 워크스페이스 주간 리포트.md`
 - 폴더가 없으면 만들고, 같은 파일이 있으면 덮어쓴다(재실행 시 최신화).
 
 ## 완료 보고

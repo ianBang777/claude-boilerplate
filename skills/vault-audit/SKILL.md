@@ -5,7 +5,7 @@ description: 옵시디언 볼트(MyfairDevVault)의 지식 체계 정합성을 �
 
 # vault-audit — 볼트 정합성 점검
 
-대상: `/Users/ian/Documents/MyfairDevVault`. 점검 전 볼트 루트의 `CLAUDE.md`(스키마·규칙)와 `태그 사전.md`(허용 태그)를 읽는다.
+대상: `/Users/ian/dev/MyfairDevVault`. 점검 전 볼트 루트의 `CLAUDE.md`(스키마·규칙)와 `태그 사전.md`(허용 태그)를 읽는다.
 
 ## 점검 항목
 
