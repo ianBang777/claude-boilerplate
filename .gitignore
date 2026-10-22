@@ -1,0 +1,8 @@
+# Claude Code 가 ~/.claude/skills(이 폴더로 가는 심링크)에 쓰는 산출물
+skills/synced/
+skills/.trash/
+
+# ~/.agents/skills 로 가는 외부 도구(Orca)의 심링크
+skills/computer-use
+skills/orca-cli
+skills/orchestration
