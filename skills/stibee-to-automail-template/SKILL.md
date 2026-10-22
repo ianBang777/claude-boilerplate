@@ -52,7 +52,7 @@ description: 스티비 자동 이메일 한 통을 마이페어 어드민 자동
 4. 본문을 스티비에서 읽는다. 로그인된 크롬 탭이 필요하므로 Playwright MCP extension 모드(메모리 `playwright-mcp-extension-mode`)로 `stibee.com` 탭에 붙고, 페이지 안 `fetch` 로 내부 API 를 부른다.
    - 인증: 헤더 `accesstoken` 에 `localStorage.satellizer_token`. **토큰 값은 페이지 안에서만 쓰고 대화·파일·로그에 남기지 않는다.**
    - 메타: `GET https://stibee.com/api/v1.0/emails/{id}` (`subject`·`listName`).
-   - 본문: _(경로 미확인. 처음 쓸 때 위 응답에서 HTML 필드를 찾고, 없으면 `/emails/{id}/content`·`/contents`·`/preview` 순으로 시도해 찾은 경로를 이 줄에 적어 둔다.)_
+   - 본문: `GET https://stibee.com/api/v1.0/editor/{id}/contents/html` (`text/html` 로 발송용 HTML 전체가 온다. `/emails/{id}` 응답에는 본문이 없다).
    - 연결이 안 되거나 본문을 못 찾으면 HTML 붙여넣기를 요청한다.
 
 **HTML·파일로 받았을 때**: 제목은 사용자에게 받거나, id 를 알면 CSV 에서 찾는다.
