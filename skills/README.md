@@ -38,3 +38,26 @@ description: 무엇을 하는지 + 언제 트리거되는지.
 | `todo` | 옵시디언 볼트 데일리 할 일 관리 — 요약·추가·완료·노트·히스토리 (`/todo`) |
 | `refine-commits` | 브랜치 커밋 전체를 되돌려 관심사 단위로 재구성 (`/refine-commits`, 명시 호출 전용) |
 | `stibee-to-automail-template` | 스티비 자동 이메일 → 어드민 자동메일 템플릿(제목·본문 HTML) 변환·검수 (`/stibee-to-automail-template`) |
+
+## 외부 스킬 (`vendor/`)
+
+남이 만든 스킬은 `vendor/`에 모은다. 이 폴더는 `.claude-plugin/plugin.json`을 가진
+로컬 플러그인이라 Claude Code가 제자리에서 플러그인으로 읽고, 안의 스킬은
+`/vendor:<name>`으로 호출된다. 직접 만든 스킬과 이름이 겹쳐도 네임스페이스가 달라
+둘 다 로드된다.
+
+- 받은 스킬은 `vendor/skills/<name>/SKILL.md`에 **실제 파일로 복사**한다. 플러그인
+  폴더 밖을 가리키는 심볼릭 링크는 Claude Code가 거부한다.
+- `npx skills add … --copy`는 `~/.claude/skills/<name>`에 평평하게 떨어뜨리므로 받은
+  뒤 `vendor/skills/`로 옮긴다. `-g` 기본값(심볼릭 링크)은 이 폴더가 링크 경유라
+  깨진 링크를 만든다.
+- 묶음째 끄려면 settings의 `enabledPlugins`에 `"vendor@skills-dir": false`.
+
+| Skill | 출처 |
+|---|---|
+| `computer-use` · `orca-cli` · `orchestration` | stablyai/orca |
+| `find-skills` | vercel-labs/skills |
+| `vercel-react-best-practices` · `web-design-guidelines` | vercel-labs/agent-skills |
+| `humanizer` (한국어판) | DaleSeo/korean-skills |
+| `kordoc` | chrisryugj/kordoc (`plugins/kordoc/skills/kordoc`, 실행 시 `npx -y kordoc@<고정 버전>`) |
+| `baoyu-diagram` | JimLiu/baoyu-skills (PNG 변환 스크립트는 bun 필요) |

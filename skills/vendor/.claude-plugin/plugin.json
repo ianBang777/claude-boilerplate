@@ -1,0 +1,4 @@
+{
+  "name": "vendor",
+  "description": "외부(GitHub·skills CLI)에서 받아 온 스킬 모음. 직접 만든 스킬은 skills/ 바로 아래에 둔다."
+}
