@@ -31,6 +31,7 @@ description: 무엇을 하는지 + 언제 트리거되는지.
 |---|---|
 | `commit-convention` | staged 변경을 분석해 Conventional Commits 메시지 작성 |
 | `review-checklist` | 작업 완료·PR 전 위반 신호 점검 게이트 (CLAUDE.md·01~05 기반) |
+| `adversarial-review` | 계획·문서·설계를 별도 세션 N개로 공격하고 판사 세션이 거른 비판만 반영 (`/adversarial-review`) |
 | `daily-review` | 오늘 변경 요약 + 배포 전 확인 포인트 (`/daily-review`) |
 | `create-api-be-to-fe` | Kotlin 백엔드 커밋 → TypeScript API 코드 변환 (`--hash` 필요) |
 | `design-token-apply` | 디자인 토큰 변경 → sementic-tokens.json 갱신 + build 자동화 |
