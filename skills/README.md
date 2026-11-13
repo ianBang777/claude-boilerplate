@@ -38,7 +38,6 @@ description: 무엇을 하는지 + 언제 트리거되는지.
 | `kotlin` | Kotlin 백엔드 코딩 기준·가이드 |
 | `todo` | 옵시디언 볼트 데일리 할 일 관리 — 요약·추가·완료·노트·히스토리 (`/todo`) |
 | `refine-commits` | 브랜치 커밋 전체를 되돌려 관심사 단위로 재구성 (`/refine-commits`, 명시 호출 전용) |
-| `stibee-to-automail-template` | 스티비 자동 이메일 → 어드민 자동메일 템플릿(제목·본문 HTML) 변환·검수 (`/stibee-to-automail-template`) |
 
 ## 외부 스킬 (`vendor/`)
 
