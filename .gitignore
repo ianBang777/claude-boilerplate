@@ -6,3 +6,6 @@ skills/.trash/
 skills/computer-use
 skills/orca-cli
 skills/orchestration
+
+# macOS 폴더 메타데이터
+.DS_Store
